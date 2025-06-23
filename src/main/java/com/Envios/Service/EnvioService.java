@@ -1,12 +1,12 @@
-package com.example.Service;
+package com.Envios.Service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.Models.Envio;
-import com.example.Repository.EnvioRepository;
+import com.Envios.Models.Envio;
+import com.Envios.Repository.EnvioRepository;
 
 @Service
 public class EnvioService {

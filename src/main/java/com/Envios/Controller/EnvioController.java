@@ -1,4 +1,4 @@
-package com.example.Controller;
+package com.Envios.Controller;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Models.Envio;
-import com.example.Service.EnvioService;
+import com.Envios.Models.Envio;
+import com.Envios.Service.EnvioService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
