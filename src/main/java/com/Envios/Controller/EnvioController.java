@@ -39,7 +39,7 @@ public class EnvioController {
         Envio envio = envioService.getEnvioById(id);
         if (envio == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(new Mensaje("id de envio no encontrado: " + id + "Error 404"));
+            .body(new Mensaje("id de envio no encontrado: " + id));
         }
         return ResponseEntity.ok(envio);
     }
@@ -61,7 +61,8 @@ public class EnvioController {
     public ResponseEntity<?> updateEnvio(@PathVariable Integer id, @RequestBody Envio envio) {
         Envio actualizado = envioService.updateEnvio(id, envio);
         if (actualizado == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Mensaje("No se encontro el Envio con id" + id));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new Mensaje("No se encontro el Envio con id" + id));
         }
         return ResponseEntity.ok(actualizado);
     }
