@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.Envios.DTO.EnvioDTO;
+import com.Envios.Mapper.EnvioMapper;
 import com.Envios.Models.Envio;
 import com.Envios.Repository.EnvioRepository;
 
@@ -40,5 +42,11 @@ public class EnvioService {
     }
     public void eliminarEnvio(Integer id){
         envioRepository.deleteById(id);
+    }
+
+    public EnvioDTO obtenerEnvioDTO(Integer id) {
+        Envio envio = envioRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Envío no encontrado"));
+    return EnvioMapper.toDTO(envio);
     }
 }
