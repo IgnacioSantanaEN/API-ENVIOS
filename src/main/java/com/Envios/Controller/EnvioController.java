@@ -54,7 +54,7 @@ public class EnvioController {
         }
 
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new Mensaje("Envio Añadido con exito" + nuevo.getIdEnvio()));
+            .body(new Mensaje("Envio Añadido con exito id: " + nuevo.getIdEnvio()));
     }
 
     @PutMapping("/admin/{id}")
