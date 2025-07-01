@@ -25,11 +25,15 @@ public class Envio {
     @Column(name = "id_venta")
     private Integer idVenta;
 
+    @Column(name = "direccion_envio")
     private String direccionEnvio;
 
+    @Column(name = "estado_envio")
     private String estadoEnvio;
 
+    @Column(name = "direccion_destino")
     private String direccionDestino;
 
+    @Column(name = "estado")
     private String estado;
 }
