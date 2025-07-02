@@ -28,23 +28,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class EnvioController {
     @Autowired
     private EnvioService envioService;
-
-    @GetMapping("/admin/")
-    public List<Envio> getAllEnvios() {
-        return envioService.getAllEnvios();
-    }
     
-    @GetMapping("/admin/{id}")
+    @GetMapping
+    public ResponseEntity<?> obtenerEnvios(){
+        List<Envio> envios = envioService.getAllEnvios();
+
+        if (envios.isEmpty()) {
+            return ResponseEntity.ok(new Mensaje("No se han encontrado envíos"));
+        }
+
+        List<EnvioDTO> resumenes = envios.stream()
+            .map(envio -> new EnvioDTO(
+            envio.getIdEnvio(),
+            "http://localhost:8083/api/envios/" + envio.getIdEnvio() 
+        ))
+        .collect(Collectors.toList());
+
+        return ResponseEntity.ok(resumenes);
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<?> getEnvioById(@PathVariable Integer id) {
         Envio envio = envioService.getEnvioById(id);
+
         if (envio == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(new Mensaje("id de envio no encontrado: " + id));
         }
+
         return ResponseEntity.ok(envio);
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/")
     public ResponseEntity<?> createEnvio(@RequestBody Envio envio) {
         Envio nuevo = envioService.CreateEnvio(envio);
 
@@ -54,20 +69,20 @@ public class EnvioController {
         }
 
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new Mensaje("Envio Añadido con exito id: " + nuevo.getIdEnvio()));
+            .body(EnvioMapper.toDTO(envio));
     }
 
-    @PutMapping("/admin/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateEnvio(@PathVariable Integer id, @RequestBody Envio envio) {
         Envio actualizado = envioService.updateEnvio(id, envio);
         if (actualizado == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new Mensaje("No se encontro el Envio con id" + id));
         }
-        return ResponseEntity.ok(actualizado);
+        return ResponseEntity.ok(EnvioMapper.toDTO(actualizado));
     }
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEnvio(@PathVariable Integer id) {
         Envio envio = envioService.getEnvioById(id);
         if (envio == null) {
@@ -79,21 +94,6 @@ public class EnvioController {
         return ResponseEntity.ok(new Mensaje("Envío eliminado correctamente"));
     }
 
-    @GetMapping("/")
-    public ResponseEntity<?> obtenerEnviosDTO() {
-        List<Envio> envios = envioService.getAllEnvios();
-
-        if (envios.isEmpty()) {
-            return ResponseEntity.ok(new Mensaje("No se han encontrado envíos"));
-        }
-
-        List<EnvioDTO> dtos = envios.stream()
-            .map(EnvioMapper::toDTO)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(dtos);
-    }
-    
     static class Mensaje {
         private String mensaje;
 

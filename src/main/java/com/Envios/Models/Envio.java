@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 public class Envio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
     @Column(name = "id_envio")
     private Integer idEnvio;
 

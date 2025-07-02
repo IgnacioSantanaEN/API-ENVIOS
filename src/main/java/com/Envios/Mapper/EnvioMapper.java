@@ -7,11 +7,12 @@ public class EnvioMapper {
     public static EnvioDTO toDTO(Envio envio) {
         if (envio == null) return null;
 
-        return new EnvioDTO(
-                envio.getIdEnvio(),
-                envio.getEstadoEnvio(),
-                envio.getDireccionDestino()
-        );
+        EnvioDTO dto = new EnvioDTO(
+        envio.getIdEnvio(),
+        "http://localhost:8083/api/envios/" + envio.getIdEnvio()
+    );
+
+    return dto;
     }
 
     public static Envio toModel(EnvioDTO dto) {
@@ -19,8 +20,6 @@ public class EnvioMapper {
 
         Envio envio = new Envio();
         envio.setIdEnvio(dto.getIdEnvio());
-        envio.setEstadoEnvio(dto.getEstadoEnvio());
-        envio.setDireccionDestino(dto.getDireccionDestino());
         return envio;
     }
     

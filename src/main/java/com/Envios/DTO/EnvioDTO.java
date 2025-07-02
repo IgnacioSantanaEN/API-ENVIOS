@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EnvioDTO {
     private Integer idEnvio;
-    private String estadoEnvio;
-    private String direccionDestino;
+    private String link;
 }
