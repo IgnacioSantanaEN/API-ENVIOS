@@ -1,7 +1,6 @@
 package com.Envios.Controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Envios.DTO.EnvioDTO;
-import com.Envios.Mapper.EnvioMapper;
 import com.Envios.Models.Envio;
 import com.Envios.Service.EnvioService;
 
@@ -27,29 +25,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("api/envios")
 public class EnvioController {
     @Autowired
-    private EnvioService envioService;
+    private EnvioService service;
     
     @GetMapping
     public ResponseEntity<?> obtenerEnvios(){
-        List<Envio> envios = envioService.getAllEnvios();
+        List<EnvioDTO> envios = service.getAllEnvios().stream()
+        .map(service::toDTO)
+        .toList();;
 
         if (envios.isEmpty()) {
             return ResponseEntity.ok(new Mensaje("No se han encontrado envíos"));
         }
 
-        List<EnvioDTO> resumenes = envios.stream()
-            .map(envio -> new EnvioDTO(
-            envio.getIdEnvio(),
-            "http://localhost:8083/api/envios/" + envio.getIdEnvio() 
-        ))
-        .collect(Collectors.toList());
-
-        return ResponseEntity.ok(resumenes);
+        return ResponseEntity.ok(envios);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getEnvioById(@PathVariable Integer id) {
-        Envio envio = envioService.getEnvioById(id);
+        Envio envio = service.getEnvioById(id);
 
         if (envio == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -59,9 +52,9 @@ public class EnvioController {
         return ResponseEntity.ok(envio);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<?> createEnvio(@RequestBody Envio envio) {
-        Envio nuevo = envioService.CreateEnvio(envio);
+        Envio nuevo = service.CreateEnvio(envio);
 
         if (nuevo == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -69,28 +62,28 @@ public class EnvioController {
         }
 
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(EnvioMapper.toDTO(envio));
+            .body(service.toDTO(nuevo));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEnvio(@PathVariable Integer id, @RequestBody Envio envio) {
-        Envio actualizado = envioService.updateEnvio(id, envio);
+        Envio actualizado = service.updateEnvio(id, envio);
         if (actualizado == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new Mensaje("No se encontro el Envio con id" + id));
         }
-        return ResponseEntity.ok(EnvioMapper.toDTO(actualizado));
+        return ResponseEntity.ok(service.toDTO(actualizado));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEnvio(@PathVariable Integer id) {
-        Envio envio = envioService.getEnvioById(id);
+        Envio envio = service.getEnvioById(id);
         if (envio == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new Mensaje("No se encontró el envío con id: " + id));
         }
 
-        envioService.eliminarEnvio(id);
+        service.eliminarEnvio(id);
         return ResponseEntity.ok(new Mensaje("Envío eliminado correctamente"));
     }
 

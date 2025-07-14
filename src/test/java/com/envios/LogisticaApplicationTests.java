@@ -1,10 +1,10 @@
-package com.example.Logistica;
+package com.envios;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LogisticaApplicationTests {
+class EnviosApplicationTests {
 
 	@Test
 	void contextLoads() {

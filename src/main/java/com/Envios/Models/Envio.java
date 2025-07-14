@@ -33,6 +33,5 @@ public class Envio {
     @Column(name = "direccion_destino")
     private String direccionDestino;
 
-    @Column(name = "estado")
     private String estado;
 }
