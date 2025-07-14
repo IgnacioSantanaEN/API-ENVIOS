@@ -53,7 +53,7 @@ public class EnvioService {
             envio.getEstadoEnvio(),
             envio.getDireccionDestino(),
             envio.getEstado(),
-            "http://localhost:8084/api/ventas/" + envio.getIdVenta()
+            "http://localhost:8090/api/ventas/" + envio.getIdVenta()
             );
 
         return dto;
